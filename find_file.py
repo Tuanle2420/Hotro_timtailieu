@@ -29,35 +29,51 @@ def get_extension(name):
 
 #tu extension xac dinh kieu file
 def readfile_pdf(file_path):
-    with pdfplumber.open(file_path) as pdf:
-        text = ''
-        for page in pdf.pages:
-            text += page.extract_text()
-    return text
+    try: 
+        with pdfplumber.open(file_path) as pdf:
+            text = ''
+            for page in pdf.pages:
+                text += page.extract_text()
+        return text
+    except:
+        print("Cannot read file: ", file_path)
+        return ''
 
 def readfile_docx(file_path):
-    doc = Document(file_path)
-    text = ''
-    for para in doc.paragraphs:
-        text += para.text + '\n'
-    
-    return text
+    try:
+        doc = Document(file_path)
+        text = ''
+        for para in doc.paragraphs:
+            text += para.text + '\n'
+        
+        return text
+    except: 
+        print("Cannnot read file: ", file_path)
+        return ''
 
 # pywin32 chi ho tro tren windows
 def readfile_doc(file_path):
-    word = win32com.client.Dispatch("Word.Application")
-    doc = word.Documents.Open(file_path)
-    text = ""
-    for para in doc.Paragraphs:
-        text += para.Range.Text
-    doc.Close()
-    word.Quit()
-    return text
+    try: 
+        word = win32com.client.Dispatch("Word.Application")
+        doc = word.Documents.Open(file_path)
+        text = ""
+        for para in doc.Paragraphs:
+            text += para.Range.Text
+        doc.Close()
+        word.Quit()
+        return text
+    except:
+        print("Cannot read file: ", file_path)
+        return ''
 
 def readfile_txt(file_path):
-    with open(file_path, 'r', encoding='utf-8') as file:
-        content = file.read()
-    return content
+    try: 
+        with open(file_path, 'r', encoding='utf-8') as file:
+            content = file.read()
+        return content
+    except:
+        print('Cannot read file: ', file_path)
+        return ''
 
 #doc file tu dien
 def readfile_dic():
